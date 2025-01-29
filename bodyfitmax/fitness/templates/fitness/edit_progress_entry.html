@@ -1,0 +1,31 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}Edit Progress Entry{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold mb-8 text-white">Edit Progress Entry</h2>
+    
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-1">
+                    {{ field.label }}
+                </label>
+                <div class="mt-1">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">
+            Update Entry
+        </button>
+    </form>
+</div>
+{% endblock %}

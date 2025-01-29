@@ -1,0 +1,74 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}Track Progress{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold mb-8 text-white">Track Your Progress</h2>
+    
+    <div class="grid gap-8 md:grid-cols-2">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4 text-white">Add Progress Entry</h3>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-1">
+                            {{ field.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">
+                    Add Entry
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4 text-white">Progress Log</h3>
+            {% if progress %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="py-2 px-4 font-semibold text-gray-300">Date</th>
+                                <th class="py-2 px-4 font-semibold text-gray-300">Weight</th>
+                                <th class="py-2 px-4 font-semibold text-gray-300">Body Fat %</th>
+                                <th class="py-2 px-4 font-semibold text-gray-300">Notes</th>
+                                <th class="py-2 px-4 font-semibold text-gray-300">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in progress %}
+                            <tr class="border-b border-gray-700">
+                                <td class="py-2 px-4 text-gray-300">{{ entry.date }}</td>
+                                <td class="py-2 px-4 text-gray-300">{{ entry.weight }} kg</td>
+                                <td class="py-2 px-4 text-gray-300">{{ entry.body_fat_percentage|default_if_none:"-" }}%</td>
+                                <td class="py-2 px-4 text-gray-300">{{ entry.notes|truncatechars:30 }}</td>
+                                <td class="py-2 px-4 text-gray-300">
+                                    <a href="{% url 'edit_progress_entry' entry.id %}" class="text-blue-500">Edit</a>
+                                    <form action="{% url 'delete_progress_entry' entry.id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-red-500">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-gray-300">No progress entries yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

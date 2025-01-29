@@ -1,0 +1,94 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Workout Program{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-white">
+        {% if form.instance.pk %}Edit{% else %}Create{% endif %} Workout Program
+    </h1>
+    <form method="post" class="space-y-6 bg-gray-800 p-6 rounded-lg shadow-lg">
+        {% csrf_token %}
+        <div class="space-y-4">
+            <div>
+                <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-200 mb-1">
+                    Name
+                </label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    {% for error in form.name.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-200 mb-1">
+                    Description
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    {% for error in form.description.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.target_area.id_for_label }}" class="block text-sm font-medium text-gray-200 mb-1">
+                    Target Area
+                </label>
+                {{ form.target_area }}
+                {% if form.target_area.errors %}
+                    {% for error in form.target_area.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.difficulty.id_for_label }}" class="block text-sm font-medium text-gray-200 mb-1">
+                    Difficulty
+                </label>
+                {{ form.difficulty }}
+                {% if form.difficulty.errors %}
+                    {% for error in form.difficulty.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="bg-red-900 text-red-200 p-4 rounded-md mt-4">
+                {% for error in form.non_field_errors %}
+                    <p class="text-sm">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="flex justify-between mt-6">
+            <a href="{% url 'workout_program_list' %}" 
+                class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded 
+                transition duration-300 ease-in-out">
+                Cancel
+            </a>
+            <button type="submit" 
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                transition duration-300 ease-in-out">
+                {% if form.instance.pk %}Update{% else %}Create{% endif %} Program
+            </button>
+        </div>
+    </form>
+
+    {% if form.instance.pk %}
+        <div class="mt-8 text-center">
+            <a href="{% url 'add_exercise_to_program' form.instance.pk %}" 
+               class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded 
+               transition duration-300 ease-in-out">
+                Add Exercises to Program
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

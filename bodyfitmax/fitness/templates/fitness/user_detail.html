@@ -1,0 +1,38 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}User Detail - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">User Detail: {{ user.username }}</h1>
+    <div class="bg-gray-800 shadow overflow-hidden sm:rounded-lg p-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Username</dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ user.username }}</dd>
+            </div>
+
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Date Joined</dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ user.date_joined|date:"M d, Y" }}</dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Last Login</dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ user.last_login|date:"M d, Y H:i" }}</dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Height </dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ profile.height|default:"Not set" }}</dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Weight</dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ profile.weight|default:"Not set" }}</dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-400">Activity Level</dt>
+                <dd class="mt-1 text-sm text-gray-300">{{ profile_form.activity_level}}</dd>
+            </div>
+        </dl>
+    </div>
+</div>
+{% endblock %}
